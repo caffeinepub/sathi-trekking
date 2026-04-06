@@ -42,7 +42,7 @@ const destinations = [
     elevation: "6,191 m",
     difficulty: "Challenging",
     duration: "12 days",
-    image: "/assets/uploads/image-019d207f-78c5-710d-99f9-56c835233f2d-2.png",
+    image: "/assets/uploads/image-019d3d43-e3e6-7585-8047-a769ababe669-1.png",
     badge: "Sacred Peak",
     badgeColor: "bg-amber-100 text-amber-800",
     description:
@@ -71,29 +71,12 @@ const destinations = [
     ],
   },
   {
-    id: "chota-kailash",
-    name: "Chota Kailash",
-    elevation: "5,945 m",
-    difficulty: "Strenuous",
-    duration: "14 days",
-    image: "/assets/generated/chota-kailash.dim_600x400.jpg",
-    badge: "Divine Summit",
-    badgeColor: "bg-purple-100 text-purple-800",
-    description:
-      "Known as the 'Little Kailash', this magnificent peak in Uttarakhand carries the same spiritual significance as Mount Kailash in Tibet. The trek passes through remote villages and stunning alpine landscapes.",
-    highlights: [
-      "Sacred Shiva site",
-      "Remote wilderness",
-      "Ancient pilgrimage route",
-    ],
-  },
-  {
     id: "adi-kailash",
     name: "Adi Kailash",
     elevation: "6,310 m",
     difficulty: "Challenging",
     duration: "10 days",
-    image: "/assets/uploads/image-019d3d2e-3224-7239-a1ac-37b5d1e103ec-1.png",
+    image: "/assets/uploads/image-019d207f-78c5-710d-99f9-56c835233f2d-2.png",
     badge: "Original Kailash",
     badgeColor: "bg-green-100 text-green-800",
     description:
@@ -104,9 +87,42 @@ const destinations = [
       "Glacial valleys",
     ],
   },
+  {
+    id: "panchuli",
+    name: "Panchuli Peaks",
+    elevation: "6,904 m",
+    difficulty: "Challenging",
+    duration: "5 Days / 4 Nights",
+    image: "/assets/image-019d6359-6a29-71c6-af3f-98279fa5ef22.png",
+    badge: "Five Peaks",
+    badgeColor: "bg-purple-100 text-purple-800",
+    description:
+      "The Panchuli massif — five summits believed to be the cooking fires (chulhas) of the Pandavas on their final journey to heaven. Standing majestically in Darma valley, these peaks offer one of the most awe-inspiring panoramas in the entire Kumaon Himalayas.",
+    highlights: ["Five sacred summits", "Darma Valley", "Pandava legend"],
+  },
 ];
 
 const packages = [
+  {
+    name: "Panchuli Trek",
+    tier: "Explorer",
+    price: "₹15,599",
+    duration: "5 Days / 4 Nights",
+    groupSize: "8 – 10 people",
+    color: "border-purple-400",
+    headerBg: "bg-purple-600",
+    featured: true,
+    features: [
+      "Shared tent accommodation",
+      "All meals (breakfast & dinner)",
+      "Experienced local guide",
+      "Basic first aid kit",
+      "Porters for group gear",
+      "Forest permits & entry fees",
+      "Darma Valley scenic route",
+    ],
+    destinations: ["Panchuli Peaks"],
+  },
   {
     name: "Sathi Essential",
     tier: "Budget",
@@ -133,7 +149,6 @@ const packages = [
     groupSize: "Up to 8",
     color: "border-primary",
     headerBg: "bg-primary",
-    featured: true,
     features: [
       "Semi-private tent accommodation",
       "All meals (3 times daily)",
@@ -166,7 +181,7 @@ const packages = [
       "Pre & post-trek hotel",
       "Professional photography",
     ],
-    destinations: ["Om Parvat", "Chota Kailash", "Adi Kailash"],
+    destinations: ["Om Parvat", "Adi Kailash"],
   },
 ];
 
@@ -203,6 +218,7 @@ export default function App() {
     email: "",
     phone: "",
     destination: "",
+    members: "",
     pickupLocation: "haldwani-kathgodam",
     message: "",
   });
@@ -230,6 +246,7 @@ export default function App() {
       email: "",
       phone: "",
       destination: "",
+      members: "",
       pickupLocation: "haldwani-kathgodam",
       message: "",
     });
@@ -491,7 +508,7 @@ export default function App() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 items-stretch">
             {packages.map((pkg, i) => (
               <motion.div
                 key={pkg.name}
@@ -504,19 +521,19 @@ export default function App() {
                 <Card
                   data-ocid={`packages.item.${i + 1}`}
                   className={`flex flex-col w-full border-2 ${pkg.color} ${
-                    pkg.featured ? "relative shadow-mountain scale-105" : ""
+                    pkg.featured ? "relative shadow-mountain" : ""
                   } transition-all`}
                 >
                   {pkg.featured && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <span className="bg-primary text-primary-foreground text-xs font-bold px-4 py-1 rounded-full">
-                        Most Popular
+                      <span className="bg-purple-600 text-white text-xs font-bold px-4 py-1 rounded-full whitespace-nowrap">
+                        New Package
                       </span>
                     </div>
                   )}
                   <CardHeader
                     className={`${pkg.headerBg} ${
-                      pkg.featured ? "text-primary-foreground" : ""
+                      pkg.featured ? "text-white" : ""
                     } rounded-t-lg p-6`}
                   >
                     <p className="text-xs uppercase tracking-widest opacity-75 font-semibold">
@@ -878,32 +895,78 @@ export default function App() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="destination">Preferred Destination *</Label>
+                    <Label
+                      htmlFor="members"
+                      className="flex items-center gap-2"
+                    >
+                      <Users className="w-4 h-4 text-primary" />
+                      Number of Members
+                    </Label>
                     <Select
-                      value={formData.destination}
+                      value={formData.members}
                       onValueChange={(v) =>
-                        setFormData((p) => ({ ...p, destination: v }))
+                        setFormData((p) => ({ ...p, members: v }))
                       }
                     >
                       <SelectTrigger
-                        data-ocid="contact.destination.select"
-                        id="destination"
+                        data-ocid="contact.members.select"
+                        id="members"
                       >
-                        <SelectValue placeholder="Select a destination" />
+                        <SelectValue placeholder="Select group size" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="om-parvat">Om Parvat</SelectItem>
-                        <SelectItem value="parvati-kund">
-                          Parvati Kund Lake
-                        </SelectItem>
-                        <SelectItem value="chota-kailash">
-                          Chota Kailash
-                        </SelectItem>
-                        <SelectItem value="adi-kailash">Adi Kailash</SelectItem>
-                        <SelectItem value="custom">Custom Trek</SelectItem>
+                        <SelectItem value="1">1 Person (Solo)</SelectItem>
+                        <SelectItem value="2">2 People</SelectItem>
+                        <SelectItem value="3">3 People</SelectItem>
+                        <SelectItem value="4">4 People</SelectItem>
+                        <SelectItem value="5">5 People</SelectItem>
+                        <SelectItem value="6">6 People</SelectItem>
+                        <SelectItem value="7">7 People</SelectItem>
+                        <SelectItem value="8">8 People</SelectItem>
+                        <SelectItem value="9">9 People</SelectItem>
+                        <SelectItem value="10">10 People</SelectItem>
+                        <SelectItem value="11">11 People</SelectItem>
+                        <SelectItem value="12">12 People</SelectItem>
+                        <SelectItem value="13">13 People</SelectItem>
+                        <SelectItem value="14">14 People</SelectItem>
+                        <SelectItem value="15">15+ People</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+
+                {/* ── DESTINATION SELECT ── */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="destination"
+                    className="flex items-center gap-2"
+                  >
+                    <Mountain className="w-4 h-4 text-primary" />
+                    Preferred Destination *
+                  </Label>
+                  <Select
+                    value={formData.destination}
+                    onValueChange={(v) =>
+                      setFormData((p) => ({ ...p, destination: v }))
+                    }
+                  >
+                    <SelectTrigger
+                      data-ocid="contact.destination.select"
+                      id="destination"
+                      className="h-12 text-base"
+                    >
+                      <SelectValue placeholder="Select a destination" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="panchuli">🏔 Panchuli Peaks</SelectItem>
+                      <SelectItem value="om-parvat">🕉 Om Parvat</SelectItem>
+                      <SelectItem value="parvati-kund">
+                        💧 Parvati Kund Lake
+                      </SelectItem>
+                      <SelectItem value="adi-kailash">⛰ Adi Kailash</SelectItem>
+                      <SelectItem value="custom">✨ Custom Trek</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 {/* ── PICKUP LOCATION ── */}
@@ -1051,6 +1114,15 @@ export default function App() {
               <ul className="space-y-2 text-background/70 text-sm">
                 <li>
                   <a
+                    data-ocid="footer.panchuli.link"
+                    href="#destinations"
+                    className="hover:text-background transition-colors"
+                  >
+                    Panchuli Peaks
+                  </a>
+                </li>
+                <li>
+                  <a
                     data-ocid="footer.om_parvat.link"
                     href="#destinations"
                     className="hover:text-background transition-colors"
@@ -1065,15 +1137,6 @@ export default function App() {
                     className="hover:text-background transition-colors"
                   >
                     Parvati Kund Lake
-                  </a>
-                </li>
-                <li>
-                  <a
-                    data-ocid="footer.chota_kailash.link"
-                    href="#destinations"
-                    className="hover:text-background transition-colors"
-                  >
-                    Chota Kailash
                   </a>
                 </li>
                 <li>
