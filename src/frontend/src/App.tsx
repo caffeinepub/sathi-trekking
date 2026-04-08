@@ -188,23 +188,45 @@ const packages = [
 
 const galleryItems = [
   {
-    label: "Dawn at Om Parvat",
+    label: "Trek Photo 1",
     gradient: "from-slate-700 via-blue-900 to-slate-800",
+    image: "/assets/uploads/image-019d6ba6-8312-7551-a3ea-d947c6431bc7-1.png",
   },
   {
-    label: "High Camp Life",
+    label: "Trek Photo 2",
     gradient: "from-green-900 via-emerald-800 to-teal-900",
+    image: "/assets/uploads/image-019d6ba6-832c-72df-a0f4-0e5abf36e609-1.png",
   },
-  { label: "Sacred Kund", gradient: "from-blue-800 via-cyan-700 to-blue-900" },
   {
-    label: "Valley Crossing",
+    label: "Trek Photo 3",
+    gradient: "from-blue-800 via-cyan-700 to-blue-900",
+    image: "/assets/uploads/image-019d6ba6-8331-70af-8189-d0c2499233ff-1.png",
+  },
+  {
+    label: "Trek Photo 4",
     gradient: "from-stone-700 via-amber-900 to-stone-800",
+    image: "/assets/uploads/image-019d6ba6-83a0-732f-b5d7-bf813aebd02b-1.png",
   },
   {
-    label: "Stargazing Camp",
+    label: "Trek Photo 5",
     gradient: "from-indigo-950 via-slate-900 to-purple-950",
+    image: "/assets/uploads/image-019d6ba6-8443-701b-b169-937c8ab5e444-1.png",
   },
-  { label: "Summit Views", gradient: "from-sky-700 via-blue-600 to-slate-700" },
+  {
+    label: "Trek Photo 6",
+    gradient: "from-sky-700 via-blue-600 to-slate-700",
+    image: "/assets/uploads/image-019d6ba6-8671-7557-83a5-8a4a6136a66f-1.png",
+  },
+  {
+    label: "Trek Photo 7",
+    gradient: "from-teal-800 via-cyan-900 to-blue-900",
+    image: "/assets/uploads/image-019d6ba6-8825-7707-8733-4faa4220abcd-1.png",
+  },
+  {
+    label: "Trek Photo 8",
+    gradient: "from-orange-900 via-amber-800 to-stone-900",
+    image: "/assets/uploads/image-019d6ba6-8a68-7557-b5d6-c64dd156ae7d-1.png",
+  },
 ];
 
 const difficultyColor: Record<string, string> = {
@@ -755,13 +777,17 @@ export default function App() {
                 transition={{ duration: 0.4, delay: i * 0.07 }}
                 className={`relative rounded-xl overflow-hidden aspect-square bg-gradient-to-br ${item.gradient} group cursor-pointer`}
               >
-                <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-                  <p className="text-white font-semibold text-sm">
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt={item.label}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
+                <div className="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/60 via-black/10 to-transparent">
+                  <p className="text-white font-semibold text-sm drop-shadow">
                     {item.label}
                   </p>
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Mountain className="w-8 h-8 text-white/20" />
                 </div>
               </motion.div>
             ))}
