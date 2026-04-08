@@ -25,13 +25,14 @@ import {
   Mountain,
   Phone,
   Star,
+  Tag,
   Tent,
   Thermometer,
   Users,
   Wind,
   Youtube,
 } from "lucide-react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -144,8 +145,8 @@ const packages = [
   {
     name: "Sathi Explorer",
     tier: "Standard",
-    price: "₹32,000",
-    duration: "12 days",
+    price: "₹22,999",
+    duration: "6 Days / 5 Nights",
     groupSize: "Up to 8",
     color: "border-primary",
     headerBg: "bg-primary",
@@ -164,8 +165,8 @@ const packages = [
   {
     name: "Sathi Summit",
     tier: "Premium",
-    price: "₹58,000",
-    duration: "15 days",
+    price: "₹25,999",
+    duration: "6 Days / 5 Nights",
     groupSize: "Up to 4",
     color: "border-accent",
     headerBg: "bg-accent",
@@ -212,6 +213,17 @@ const difficultyColor: Record<string, string> = {
   Strenuous: "bg-red-100 text-red-800",
 };
 
+const pricePerPerson: Record<string, number> = {
+  panchuli: 15599,
+  "om-parvat": 18499,
+  "parvati-kund": 18499,
+  "adi-kailash": 32000,
+};
+
+function formatINR(amount: number): string {
+  return amount.toLocaleString("en-IN");
+}
+
 export default function App() {
   const [formData, setFormData] = useState({
     name: "",
@@ -228,6 +240,17 @@ export default function App() {
   const scrollToContact = () => {
     contactRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const memberCount = Number.parseInt(formData.members, 10);
+  const destinationPrice = pricePerPerson[formData.destination];
+  const showDiscount =
+    !Number.isNaN(memberCount) &&
+    memberCount >= 5 &&
+    destinationPrice !== undefined;
+
+  const baseTotal = showDiscount ? destinationPrice * memberCount : 0;
+  const discountAmount = showDiscount ? Math.round(baseTotal * 0.2) : 0;
+  const discountedTotal = showDiscount ? baseTotal - discountAmount : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -968,6 +991,69 @@ export default function App() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {/* ── GROUP DISCOUNT BOX ── */}
+                <AnimatePresence>
+                  {showDiscount && (
+                    <motion.div
+                      data-ocid="contact.success_state"
+                      key="discount-box"
+                      initial={{ opacity: 0, y: -10, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.97 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className="rounded-xl border-2 border-green-400 bg-green-50 dark:bg-green-950/30 dark:border-green-600 p-5 shadow-sm"
+                    >
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center shrink-0">
+                          <Tag className="w-4 h-4 text-white" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-green-800 dark:text-green-300 text-base">
+                              Group Discount Applied! 🎉
+                            </span>
+                            <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs px-2 py-0.5">
+                              20% OFF
+                            </Badge>
+                          </div>
+                          <p className="text-green-700 dark:text-green-400 text-sm">
+                            Special rate for groups of 5+ members
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="bg-white dark:bg-green-950/50 rounded-lg p-4 space-y-2">
+                        <div className="flex justify-between items-center text-sm text-muted-foreground">
+                          <span>
+                            ₹{formatINR(destinationPrice)} × {memberCount}{" "}
+                            people
+                          </span>
+                          <span className="line-through">
+                            ₹{formatINR(baseTotal)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-center text-sm text-green-700 dark:text-green-400 font-medium">
+                          <span>Group Discount (20%)</span>
+                          <span>− ₹{formatINR(discountAmount)}</span>
+                        </div>
+                        <div className="border-t border-green-200 dark:border-green-700 pt-2 flex justify-between items-center">
+                          <span className="font-bold text-green-900 dark:text-green-200 text-base">
+                            Final Total
+                          </span>
+                          <span className="font-bold text-green-700 dark:text-green-300 text-xl">
+                            ₹{formatINR(discountedTotal)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-green-600 dark:text-green-500 mt-3 flex items-center gap-1">
+                        <Check className="w-3 h-3" />
+                        Discount will be confirmed in your booking confirmation
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* ── PICKUP LOCATION ── */}
                 <div className="space-y-2">
